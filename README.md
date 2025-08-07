@@ -1,145 +1,92 @@
-# 🛒 AI Cart Recovery Workflow
+# 🛒 AI Cart Recovery Automation using n8n, MongoDB, Twilio & Groq LLM
 
-This project is an **AI-powered Cart Recovery System** that uses [`n8n`](https://n8n.io/) to automate recovery actions like sending personalized emails and phone calls when a customer abandons their cart.
-
----
-
-## 📌 Features
-
-- 🧠 Smart form to collect user info (name, email, phone, and products)
-- 📦 MongoDB integration to log or fetch cart data
-- 📧 Automated email reminders using dynamic templates
-- 📞 Twilio-powered phone call trigger
-- 🔁 Fully automated via `n8n` workflow
+This project is an AI-powered **Cart Recovery System** built using the `n8n` workflow automation tool, with integrations for MongoDB, Email (SMTP), Twilio for voice calls, and the **Groq LLM API** to dynamically generate personalized marketing emails based on the abandoned cart content.
 
 ---
 
-## 🚀 Workflow Preview
+## 🧠 Overview
 
-### 🔁 Flow Overview (n8n)
+When a user abandons a shopping cart, businesses often lose sales. This automation ensures that such users are intelligently and automatically re-engaged via **email and phone call**, with content tailored to their cart contents.
 
-```text
-[ Execute Workflow ]
-        ↓
-     [ MongoDB ]
-        ↓
-   [ Send Email ]
-        ↓
-  [ Make a Call ]
-🧩 Components Used
-Trigger: When clicking "Recover Cart"
+This system not only reminds users to complete their purchase but also improves conversion using **LLM-generated emails** that are highly personalized and persuasive.
 
-MongoDB: Fetches or logs the cart data
+---
 
-Email Node: Sends personalized email reminders
+## 📋 Workflow Summary
 
-Twilio Call Node: Makes a follow-up call for cart recovery
+The automation workflow is implemented using `n8n` and follows this structure:
 
-🖼️ Screenshots
-🧾 Frontend: AI Cart Recovery Form
+1. **Trigger (Webhook Form Submission)**  
+   A user submits their name, email, phone number, and list of abandoned cart products via a web form.
 
-📧 Email Sent
+2. **MongoDB (Find/Log)**  
+   The data is sent to MongoDB where it is either fetched for updates or logged for analytics and record-keeping.
 
-🔁 n8n Workflow
+3. **Groq LLM API (Email Content Generation)**  
+   Using the Groq API (running powerful language models like `llama3` or `mixtral`), the product list is sent as a prompt and a **custom recovery email** is generated. This message includes urgency (e.g., limited-time discounts), mentions specific products from the user’s cart, and uses marketing-style tone to increase conversion.
 
-🧰 Tech Stack
-Tech	Description
-n8n	Workflow automation platform
-MongoDB	Cart data storage
-Twilio	Call automation
-SMTP / Gmail	Email sending
-HTML / CSS	Frontend UI
-Node.js	Backend (optional integration)
+4. **Send Email (SMTP)**  
+   The generated email is then sent to the user via an SMTP provider like Gmail. This email includes the user's name and product list to create a personal touch.
 
-📥 How It Works
-User fills the form with their name, email, number, and products.
+5. **Make a Call (Twilio)**  
+   After the email is sent, a voice call is made to the user using **Twilio**, with a polite reminder that they left products in their cart, encouraging them to check their email and complete the order.
 
-Workflow triggers on "Recover Cart" button click.
+---
 
-MongoDB node optionally stores or fetches cart info.
+## 🧩 Tools & Technologies Used
 
-Email node sends a recovery email to the user.
+| Tool      | Role |
+|-----------|------|
+| **n8n**   | Core visual workflow automation platform |
+| **MongoDB** | To store and retrieve cart data |
+| **Groq LLM** | To generate personalized recovery email content dynamically |
+| **SMTP (Gmail)** | To send the generated email to the user |
+| **Twilio** | To call the user as a final push for recovery |
+| **HTML Form** | Web UI for user cart submission |
 
-Call node (Twilio) initiates a follow-up call.
+---
 
-📂 Folder Structure
-pgsql
-Copy
-Edit
-.
-├── README.md
-├── frontend/
-│   └── index.html
-├── n8n-workflow/
-│   └── cart-recovery.json
-├── assets/
-│   ├── form.png
-│   ├── email.png
-│   └── workflow.png
-📦 Setup Instructions
-🔗 Prerequisites
-MongoDB URI
+## 💡 Why Use Groq LLM?
 
-n8n hosted locally or on cloud
+- Enables real-time **personalized email generation**.
+- Embeds user-specific product names and tone.
+- Improves chances of recovery with emotional, relevant content.
+- Significantly better than static email templates.
 
-SMTP email credentials (e.g. Gmail App Password)
+---
 
-Twilio account with verified number
+## 💬 Example Use Case
 
-⚙️ Steps
-Clone the repo:
+Let’s say **Vivek** abandons a cart with **“shoes” and “crocks”**. When he submits the form:
 
-bash
-Copy
-Edit
-git clone https://github.com/yourusername/ai-cart-recovery.git
-cd ai-cart-recovery
-Open n8n, and import cart-recovery.json under Workflows.
+- MongoDB logs his details.
+- Groq LLM is prompted with:  
+  _"Generate a friendly, urgent cart recovery email for Vivek who abandoned shoes and crocks."_
+- A creative email is returned like:  
+  _"Hi Vivek, you left behind amazing deals on shoes and crocks. Our flash sale ends soon — complete your order and enjoy 20% off!"_
+- This email is automatically sent, and a Twilio voice call follows up within seconds.
 
-Set your environment variables or credentials in n8n:
+---
 
-MongoDB credentials
+## 🛠 Setup Overview
 
-SMTP credentials for email
+1. Set up your `n8n` environment (self-hosted or cloud).
+2. Create a Webhook trigger in n8n for the form.
+3. Connect MongoDB and Twilio nodes with appropriate credentials.
+4. Integrate Groq API using an HTTP Request node.
+5. Connect the LLM response to the Email node for dynamic content injection.
+6. Test end-to-end using a local form submission.
 
-Twilio credentials for call
+---
 
-Launch the frontend:
+## 📣 Conclusion
 
-bash
-Copy
-Edit
-cd frontend
-open index.html
-Test the form. Fill in the details and click Recover Cart to trigger the full workflow.
+This AI Cart Recovery system is an **end-to-end automated sales booster** for e-commerce. By combining the flexibility of `n8n`, the power of **LLMs for contextual email generation**, and the immediacy of **voice calls**, this setup ensures that abandoned carts turn into recovered checkouts — automatically.
 
-📧 Sample Email Output
-vbnet
-Copy
-Edit
-Hi Vivek,
+---
 
-We noticed you left some amazing deals behind! Your shoes and crocks are still waiting in your cart. 
-As a friendly reminder, our flash deal on shoes ends in 24 hours, and you can get 20% off on your entire order!
+## 👨‍💻 Built by
 
-Don't miss out on this incredible opportunity. Complete your order now and get ready to step out in style!
-
-Complete Your Order Now
-
-Love shopping? Explore more options on:
-Flipkart | Meesho | Amazon | Zivame | Myntra
-
-Best regards,  
-Vivek LLM 🤖
-🙌 Credits
-Developed by Vivek Chaudhari
-
-Automation powered by n8n
-
-Voice & Email by Twilio and Gmail SMTP
-
-📝 License
-This project is licensed under the MIT License.
-
-📣 Feedback
-Feel free to open an issue or submit a PR for enhancements!
+**Vivek Chaudhari**  
+AI & Automation Developer  
+Email: vivekchaudhari3718@gmail.com
